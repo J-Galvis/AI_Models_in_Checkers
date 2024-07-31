@@ -1,17 +1,18 @@
+from checkers.game import Game
 import random
 
-def agenteRandom(game):
-    game.move(random.choice(game.get_possible_moves()))
+def agenteRandom(curretGame)-> Game:
+    curretGame.move(random.choice(curretGame.get_possible_moves()))
 
-def randVrand(game):
+def randVrand(curretGame)-> Game:
     try:
-        while not game.is_over():
-            if game.whose_turn() == 1:
-                agenteRandom(game)
+        while not curretGame.is_over():
+            if curretGame.whose_turn() == 1:
+                agenteRandom(curretGame)
             else:
-                agenteRandom(game)
+                agenteRandom(curretGame)
 
     except KeyboardInterrupt:
         msg = "Juego Interrumpido!"
         return None
-    return game
+    return curretGame

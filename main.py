@@ -1,40 +1,52 @@
-from checkers.game import Game
-from Graphics import drawBoard
-from Arandom import agenteRandom
+import pygame
 
-def startGame():
-    newGame = Game()
-    newGame.board.player_turn = 2 #INICIA LA BLANCA
-    return newGame
+pygame.init()
 
-def createArray(game):
-    Pieces = []
-    for piece in game.board.pieces:
-        # print(piece.king) #Me dice si es reina
-        # print(piece.position) #Devuelve la posición en el tablero
-        if piece.position == None: pass
-        else : Pieces.append([piece.position,piece.player,piece.king,])
-    Pieces.sort(key=lambda x: x[0])
-    return Pieces
+listPositions = []
+# Constants
+WIDTH, HEIGHT = 400, 400
+ROWS, COLS = 8, 8
+SQUARE_SIZE = WIDTH // COLS
 
-def evalGame(Pieces:list):
-    P1 = []
-    P2 = []
-    for piece in Pieces:
-        if piece[1] == 1: P2.append(piece)
-        else: P1.append(piece)
-    return P1,P2
+# Colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 
-if __name__ == "__main__": 
-    # game = startGame()
-    # Pieces = createArray(game)
-    # P1,P2 = evalGame(Pieces)
-    # print(P1)
-    # drawBoard(Pieces)
+# Create the screen
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('Checkers Board')
 
-    Newgame = startGame()
-    for _ in range(30):agenteRandom(Newgame)
-    Pieces = createArray(Newgame)
-    P1,P2 = evalGame(Pieces)
-    print(P1)
-    drawBoard(Pieces)
+def draw_board(screen)-> None:
+    counter=0
+    for row in range(ROWS):
+        for col in range(COLS):
+            color = WHITE if (row + col) % 2 == 0 else BLACK
+            pygame.draw.rect(screen, color, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+            listPositions.append([counter,row,col])
+
+def verPosiciones(pos: tuple[int,int])-> int:
+    ...
+
+
+
+def initGame() -> None:
+    clock = pygame.time.Clock()
+    clock.tick(60)
+
+    run = True
+
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+
+        draw_board(screen)
+        pygame.display.flip()
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    initGame()
