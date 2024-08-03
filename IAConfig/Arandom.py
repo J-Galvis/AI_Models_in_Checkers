@@ -16,3 +16,8 @@ def randVrand(curretGame)-> Game:
         msg = "Juego Interrumpido!"
         return None
     return curretGame
+
+if __name__ == "__main__":
+    Newgame = Game()
+    agenteRandom(Newgame)
+    print((Newgame.get_possible_moves()))

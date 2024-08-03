@@ -1,5 +1,5 @@
 from checkers.game import Game
-from Arandom import agenteRandom
+from IAConfig.Arandom import agenteRandom
 
 # Constants
 WIDTH, HEIGHT = 400, 400

@@ -1,5 +1,5 @@
 import pygame
-from setup import *
+from gameConfig.setup import *
 
 pygame.init()
 
@@ -63,6 +63,9 @@ def initGame() -> None:
     run = True
 
     Newgame = startGame()
+    turn= True
+    verifier = False
+    PMove = []
 
     while run:
         for event in pygame.event.get():
@@ -70,11 +73,25 @@ def initGame() -> None:
                 run = False
             
             if event.type == pygame.MOUSEBUTTONDOWN:
-                for position in listPositions:
-                    if position.is_clicked(pygame.mouse.get_pos()):
-                        print(position.number)
-        
-        agenteRandom(Newgame)
+                if turn:
+                    for position in listPositions:
+                        if position.is_clicked(pygame.mouse.get_pos()):
+                            print(position.number)
+                            if verifier: 
+                                PMove.append(position.number)
+                                Newgame.move(PMove)
+                                PMove.clear()
+                                turn = not(turn)
+                            else: PMove.append(position.number)
+
+                            verifier = not(verifier)
+                        
+
+                else: 
+                    agenteRandom(Newgame)
+                    turn = not(turn)
+
+    
 
         listPieces = createArray(Newgame)
         draw_board(screen)
