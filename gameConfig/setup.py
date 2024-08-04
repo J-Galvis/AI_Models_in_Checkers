@@ -1,5 +1,12 @@
+import sys
+import os
+
+# Add the IAConfig directory to sys.path
+PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'IAConfig'))
+sys.path.append(PATH)
+
 from checkers.game import Game
-from IAConfig.Arandom import agenteRandom
+from Arandom import agenteRandom
 
 # Constants
 WIDTH, HEIGHT = 400, 400
@@ -8,9 +15,10 @@ SQUARE_SIZE = WIDTH // COLS
 
 # Colors
 LIGHT_COLOR = (255, 230, 120)
-DARK_COLOR = (60, 40, 0)
+DARK_COLOR = (110, 70, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+HIGHTLIGHT = (150, 255, 60)
 
 def startGame()-> Game:
     newGame = Game()

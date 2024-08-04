@@ -4,6 +4,8 @@ from gameConfig.setup import *
 pygame.init()
 
 listPositions = []
+font = pygame.font.Font(None, 50)
+text = "Q"
 
 class SquareBoard:
     def __init__(self, x, y)-> None:
@@ -18,7 +20,7 @@ class SquareBoard:
             if self.y == 0: self.number = (self.x + 1)//2
             else: self.number = ((self.y * 4) + (self.x)//2) +1
     
-    def draw(self, screen):
+    def draw(self, screen)-> None:
         pygame.draw.rect(screen, self.color, self.rect)
 
     def is_clicked(self, pos)-> bool:
@@ -48,12 +50,19 @@ def draw_pieces(screen, listPositions:list ,listPieces:list)-> None:
 
     for position in listPositions:
         piece = piece_dict.get(position.number)
-        if piece:
-            if piece[1] == 1: color=WHITE
-            else: color=BLACK
-            pygame.draw.circle(screen, color, pygame.Rect(position.x*SQUARE_SIZE, position.y*SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE).center, 22)
+        x = position.x*SQUARE_SIZE
+        y = position.y*SQUARE_SIZE
+        if piece:  
+            color = WHITE if piece[1] == 1 else BLACK
+            pygame.draw.circle(screen, color, pygame.Rect(x, y, SQUARE_SIZE, SQUARE_SIZE).center, 22)
+ 
+            if piece[2]:
+                color = BLACK if piece[1] == 1 else WHITE
+                screen.blit(font.render(text, True, color), (x+10 ,y+10))    
 
-    
+def drawHighlight(screen, position)-> None:
+    pygame.draw.circle(screen, HIGHTLIGHT, pygame.Rect(position.x*SQUARE_SIZE, position.y*SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE).center, 25)
+
 
 def initGame() -> None:
     clock = pygame.time.Clock()
@@ -63,7 +72,7 @@ def initGame() -> None:
     run = True
 
     Newgame = startGame()
-    turn= True
+    # turn= True
     verifier = False
     PMove = []
 
@@ -73,28 +82,38 @@ def initGame() -> None:
                 run = False
             
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if turn:
+                if Newgame.board.player_turn == 2:
                     for position in listPositions:
                         if position.is_clicked(pygame.mouse.get_pos()):
-                            print(position.number)
                             if verifier: 
                                 PMove.append(position.number)
-                                Newgame.move(PMove)
-                                PMove.clear()
-                                turn = not(turn)
-                            else: PMove.append(position.number)
+                                try : 
+                                    Newgame.move(PMove)
+                                    PMove.clear()
+                                    turn = not(turn)
+
+                                except: PMove.clear()
+                                hightlight = None
+
+                            else: 
+                                PMove.append(position.number)
+                                hightlight = position
 
                             verifier = not(verifier)
+                            break
                         
 
                 else: 
                     agenteRandom(Newgame)
-                    turn = not(turn)
 
     
 
         listPieces = createArray(Newgame)
         draw_board(screen)
+
+        try: drawHighlight(screen, hightlight)
+        except: pass
+
         draw_pieces(screen, listPositions, listPieces)
         pygame.display.flip()
 
