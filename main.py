@@ -7,6 +7,10 @@ listPositions = []
 font = pygame.font.Font(None, 50)
 text = "Q"
 
+# Create the screen
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('Checkers Board')
+
 class SquareBoard:
     def __init__(self, x, y)-> None:
         self.rect = pygame.Rect(x*SQUARE_SIZE, y*SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
@@ -26,14 +30,11 @@ class SquareBoard:
     def is_clicked(self, pos)-> bool:
         return self.rect.collidepoint(pos)
 
-# Create the screen
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Checkers Board')
-
 def create_board()-> None:
     for row in range(ROWS):
         for col in range(COLS):
             listPositions.append(SquareBoard(col, row))
+
 
 def draw_board(screen)-> None:
     for position in listPositions:
@@ -47,7 +48,7 @@ def draw_pieces(screen, listPositions:list ,listPieces:list)-> None:
     This creates a dictionary where the keys is the number of the piece
     and the values are the corresponding pieces.
     '''
-
+    
     for position in listPositions:
         piece = piece_dict.get(position.number)
         x = position.x*SQUARE_SIZE
@@ -56,9 +57,10 @@ def draw_pieces(screen, listPositions:list ,listPieces:list)-> None:
             color = WHITE if piece[1] == 1 else BLACK
             pygame.draw.circle(screen, color, pygame.Rect(x, y, SQUARE_SIZE, SQUARE_SIZE).center, 22)
  
-            if piece[2]:
+            if Qpiece[2]:
                 color = BLACK if piece[1] == 1 else WHITE
-                screen.blit(font.render(text, True, color), (x+10 ,y+10))    
+                screen.blit(font.render(text, True, color), (x+10 ,y+10))
+
 
 def drawHighlight(screen, position)-> None:
     pygame.draw.circle(screen, HIGHTLIGHT, pygame.Rect(position.x*SQUARE_SIZE, position.y*SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE).center, 25)
@@ -101,12 +103,9 @@ def initGame() -> None:
 
                             verifier = not(verifier)
                             break
-                        
 
                 else: 
                     agenteRandom(Newgame)
-
-    
 
         listPieces = createArray(Newgame)
         draw_board(screen)
@@ -118,6 +117,7 @@ def initGame() -> None:
         pygame.display.flip()
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     initGame()
