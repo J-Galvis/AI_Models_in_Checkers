@@ -1,8 +1,13 @@
-# Class
+# Specifications
 
-The main class is a piece, witch moves in an matrix.
+Every piece will be an instance of the abstract class Piece. The classes of Queen and Pawn inherit from Piece.
 
-## Class : piece
+## Absgract Class Piece
 
-args : 
-player:bool
+color: bool
+
+### Class Pawn
+
+### Class Queen 
+
+
